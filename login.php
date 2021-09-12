@@ -1,40 +1,6 @@
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Testing WebSiteName</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body> 
 
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">WebSiteName</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="index.php">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Page 1-1</a></li>
-          <li><a href="#">Page 1-2</a></li>
-          <li><a href="#">Page 1-3</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Page 2</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-
-
-	</div>
-
-</nav>
 <div class="container">
 
 <form method="POST" action="login.php" class="form">  
@@ -60,7 +26,7 @@
                     <td></td>
                     <td><input type="submit" name="login" value="login"/>
                     
-                    <p>don't have an account? <a href="register.php">register</a>.</p></td>
+                    <p>don't have an account? <a href="index.php?page=register">register</a>.</p></td>
                 </tr>
                    
     </table>
@@ -69,6 +35,9 @@
 
   <?php
 	// call connection.php 
+  if(isset($_SESSION['USER'])){
+    header('Location: '.'index.php');
+}
 	require_once("connection.php");
 	// Check if the user has pressed the login button, then it will be processed
 	if (isset($_POST["login"])) {
@@ -81,20 +50,20 @@
 		$uname = addslashes($uname);
 		$pword = strip_tags($psw);
 		$pword = addslashes($psw);
-		if ($username == "" || $password =="") {
-			echo "username or password can't emplty!";
+		if ($uname == "" || $psw =="") {
+			echo '<script language="javascript">alert("username and password can not empty!"); window.location="index.php?page=login";</script>';
 		}else{
 			$sql = "select * from account where uname = '$uname' and psw = '$psw' ";
 			$query = mysqli_query($conn,$sql);
 			$num_rows = mysqli_num_rows($query);
 			if ($num_rows==0) {
-				echo "username or password was wrong";
+				echo '<script language="javascript">alert("wrong password or username"); window.location="index.php?page=login";</script>';
 			}else{
 				//proceed to save the login name in the session for later processing
-				$_SESSION['uname'] = $uname;
+			$_SESSION['USER'] = $uname;
                 // proceed to save the login name in the session for later processing
                 // here I proceed to redirect the site to a page called index.php
-                header('Location: index.php');
+      header('Location: index.php');
 			}
 		}
 	}
