@@ -1,6 +1,17 @@
-<?php session_start(); ?>
+<?php session_start(); 
+
+//   require_once("connection.php");
+//   if (isset($_SESSION['USER'])) {
+//       echo "<a> works </a> ";
+//   } else {
+//       echo "<a> not work </a>";
+//   }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +20,9 @@
     <script src="lib/js/jquery.validate.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="lib/css/style.css" >
+    <link rel="stylesheet" href="lib/css/style.css">
 </head>
+
 <body>
     <div class="wrap">
         <div class="header">
@@ -21,10 +33,13 @@
                     <a class="p-2 text-dark" href="index.php?page=services">Services</a>
                     <a class="p-2 text-dark" href="index.php?page=mytravel">booking</a>
                     <a class="p-2 text-dark" href="index.php?page=contact-us">Contact us</a>
-                    <?php if(!isset($_SESSION['USER'])){ ?><a class="p-2 text-dark" href="index.php?page=register">Register</a><?php }?>
-                    <?php if(!isset($_SESSION['USER'])){ ?>
+                    
+                  
+
+                    <?php if (!isset($_SESSION['USER'])) { ?><a class="p-2 text-dark" href="index.php?page=register">Register</a><?php } ?>
+                    <?php if (!isset($_SESSION['USER'])) { ?>
                         <a class="p-2 text-dark" href="index.php?page=login">Login</a>
-                    <?php }else{ ?>
+                    <?php } else { ?>
                         <a class="p-2 text-dark" href="logout.php">Logout</a>
                     <?php } ?>
                 </nav>
