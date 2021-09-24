@@ -1,104 +1,69 @@
+<?php
+    // User login will be redirected to the home page
+    if(isset($_SESSION['USER'])){
+        header('Location: '.'index.php');
+    }
 
+    //Get data from the form put into the session
+    $valuePost = $_POST;
+    $_SESSION['valuePost'] = $valuePost;
+    $arrError = [];
+    unset($_SESSION['alert_message_error']);
+    unset($_SESSION['alert_message_success']);
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Testing WebSiteName</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body> 
+    if(isset($valuePost['submit'])) {
 
+        //validation data
+        if(isset($valuePost['email']) && $valuePost['email'] === '') {
+            $arrError["email_required"] = msg_required;
+        } else if (isset($valuePost['email']) && !filter_var($valuePost['email'], FILTER_VALIDATE_EMAIL)) {
+            $arrError["email_required"] = msg_email;
+        }
+        if(isset($valuePost['password']) && $valuePost['password'] === '') {
+            $arrError["password_required"] = msg_required;
+        }
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">WebSiteName</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="index.php">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Page 1-1</a></li>
-          <li><a href="#">Page 1-2</a></li>
-          <li><a href="#">Page 1-3</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Page 2</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-
-
-	</div>
-
-</nav>
-<div class="container">
-
-<form method="POST" action="login.php" class="form">  
-    <table cellspacing="0" cellpadding="5">
-      <h1>login</h1>
+        //Open data file users.json
+        $arrRedRecord = [];
+        $fh = fopen(url_data_users,'r');
+        $arrRedRecord = json_decode(fgets($fh));
+        fclose($fh);
     
-      <tr>
-                    <td>username</td>
-                    <td>
-                    <input type="text" name="uname" >
-                  </td>
-                </tr>
-                <tr>
-                    <td>password</td>
-                    <td>
-                 <input type="password" name="psw"  >
-                 </td>
-                </tr>
-  
-      
-                <tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" name="login" value="login"/>
-                    
-                    <p>don't have an account? <a href="register.php">register</a>.</p></td>
-                </tr>
-                   
-    </table>
-  </form>
-
-
-  <?php
-	// call connection.php 
-	require_once("connection.php");
-	// Check if the user has pressed the login button, then it will be processed
-	if (isset($_POST["login"])) {
-		// get user information 
-		$uname = $_POST["uname"];
-		$psw = $_POST["psw"];
-		//clean information, remove html tags, special characters
-		//intentionally added by the user for sql injection attacks
-		$uname = strip_tags($uname);
-		$uname = addslashes($uname);
-		$pword = strip_tags($psw);
-		$pword = addslashes($psw);
-		if ($username == "" || $password =="") {
-			echo "username or password can't emplty!";
-		}else{
-			$sql = "select * from account where uname = '$uname' and psw = '$psw' ";
-			$query = mysqli_query($conn,$sql);
-			$num_rows = mysqli_num_rows($query);
-			if ($num_rows==0) {
-				echo "username or password was wrong";
-			}else{
-				//proceed to save the login name in the session for later processing
-				$_SESSION['uname'] = $uname;
-                // proceed to save the login name in the session for later processing
-                // here I proceed to redirect the site to a page called index.php
-                header('Location: index.php');
-			}
-		}
-	}
+        if(count($arrError) == 0){
+            //Check email and password with record in file users.json
+            $isLogin = false;
+            if (!is_null($arrRedRecord)) {
+                foreach($arrRedRecord  as $key => $value) {
+                    if ($value->email == $valuePost['email'] && $value->password == $valuePost['password']) {
+                        $isLogin = true;
+                        $value->login_success = 1;
+                        $_SESSION['USER'] = $value;
+                        break;
+                    }
+                }
+            }
+            if(!$isLogin) {
+                $_SESSION['alert_message_error'] = msg_login_error;
+            } else {
+                header('Location: '.url_mytravel);
+                exit();
+            }
+        }
+    }
 ?>
+<div class="container">
+    <form class="login"  method="post" action="index.php?page=login" id="contactUs">
+        <?php require 'alert-message.php';  ?>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="text" class="form-control" value="<?php echo isset($_SESSION['valuePost']['email']) ? $_SESSION['valuePost']['email'] : ''  ?>" name="email" placeholder="Input your email..">
+            <label  class="error"><?php echo isset($arrError["email_required"]) ? $arrError["email_required"] : ''  ?></label>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Password</label>
+            <input type="password" class="form-control" value="<?php echo isset($_SESSION['valuePost']['password']) ? $_SESSION['valuePost']['password'] : ''  ?>" name="password" placeholder="Input your password..">
+            <label  class="error"><?php echo isset($arrError["password_required"]) ? $arrError["password_required"] : ''  ?></label>
+        </div>
+        <input type="submit" class="btn" name="submit" value="Submit">
+    </form>
 </div>
-</body>
-</html>
