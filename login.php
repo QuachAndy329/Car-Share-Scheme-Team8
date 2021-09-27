@@ -45,7 +45,7 @@
             if(!$isLogin) {
                 $_SESSION['alert_message_error'] = msg_login_error;
             } else {
-                header('Location: '.url_mytravel);
+                header('Location: '.url_myfitness);
                 exit();
             }
         }

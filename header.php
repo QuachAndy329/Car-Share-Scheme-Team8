@@ -15,12 +15,12 @@
     <div class="wrap">
         <div class="header">
             <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-header-custom shadow-sm">
-                <h5 class="my-0 mr-md-auto font-weight-normal logo"><a href="index.php">Abc</a></h5>
+                <h5 class="my-0 mr-md-auto font-weight-normal logo"><a href="index.php">MelTravel</a></h5>
                 <nav class="my-2 my-md-0 mr-md-3">
                     <a class="p-2 text-white" href="index.php">Home</a>
-                    <a class="p-2 text-dark" href="index.php?page=services">Services</a>
-                    <a class="p-2 text-dark" href="index.php?page=mytravel">booking</a>
-                    <a class="p-2 text-dark" href="index.php?page=contact-us">Contact us</a>
+                    <?php if(isset($_SESSION['USER']) && ($_SESSION['USER']->role == '1')){ ?><a class="p-2 text-dark" href="index.php?page=manage">Manage</a><?php }?>
+                    <a class="p-2 text-dark" href="index.php?page=location">Location</a>
+                    <a class="p-2 text-dark" href="index.php?page=booking">Booking</a>
                     <?php if(!isset($_SESSION['USER'])){ ?><a class="p-2 text-dark" href="index.php?page=register">Register</a><?php }?>
                     <?php if(!isset($_SESSION['USER'])){ ?>
                         <a class="p-2 text-dark" href="index.php?page=login">Login</a>

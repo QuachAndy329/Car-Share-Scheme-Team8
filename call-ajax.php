@@ -3,7 +3,7 @@
     //Get information when looking for my fitness
     $search = $_POST['name'];
     $res = array();
-      foreach(unserialize(mytravel_work) as $value) {
+      foreach(unserialize(myfitness_work) as $value) {
         if($search == ''){
           $res[] = $value;
         } else {
