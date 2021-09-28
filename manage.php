@@ -3,20 +3,25 @@
     if(!isset($_SESSION['USER'])) {
         header('Location: '.'index.php?page=login');
     }
-    $arrRedRecord = [];
     $fh = fopen(url_data_manage,'r');
     $arrRedRecord = json_decode(fgets($fh));
     fclose($fh);
     $location = unserialize(localtion);
     if(isset($_GET['action']) && $_GET['action'] == 'delete') {
-        $id = $_GET['id'];
-        $arrRedRecord = array_filter($arrRedRecord, function($item) use ($id) {
-            if($item->id != $id){
-                return true;
-            }
-        });
+        $id_manager = $_GET['id'];
         $fp = fopen(url_data_manage, 'w');
-        fwrite($fp, json_encode($arrRedRecord));
+        $recordEdit = [];
+        foreach($arrRedRecord as $value) {
+            if($value->id != $id_manager) {
+                $object = new stdClass();
+                $object->id = $value->id;
+                $object->file_name = $value->file_name;
+                $object->location_id = $value->location_id;
+                $object->description = $value->description;
+                $recordEdit[] = $object;
+            }
+        }
+        fwrite($fp, json_encode($recordEdit));
         fclose($fp);
         header('Location: '.'index.php?page=manage');
     }
@@ -40,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if(!empty($arrRedRecord) && count($arrRedRecord) > 0){ ?>
+                    <?php if(!empty($arrRedRecord)){ ?>
                         <?php foreach($arrRedRecord as $key =>  $value){ ?>
                             <tr>
                                 <td style="text-align: center;"><img width="80" height="80" src="<?php echo 'file/'.$value->file_name ?>" /></td>
