@@ -34,9 +34,6 @@
                 $arrError["password_required"] =  msg_error_password;
             }
         }
-        if (isset($valuePost['location_id']) && $valuePost['location_id'] === '') {
-            $arrError["location_id_required"] = msg_required;
-        }
         //Open data file users.json
         $arrRedRecord = [];
         $fh = fopen(url_data_users,'r');
@@ -68,6 +65,7 @@
         if (count($arrError) == 0 && $isCheckDuplicate === false && isset($valuePost['submit'])) {
             $fp = fopen(url_data_users, 'w');
             unset($valuePost['submit']);
+            $valuePost['role'] = '2';
             $valuePost['id'] = count($arrId) > 0 ? (max($arrId) + 1) : 1;
             $arrRedRecord[] = $valuePost;
             fwrite($fp, json_encode($arrRedRecord));
@@ -119,36 +117,6 @@
             <label for="inputAddress">Password</label>
             <input type="password" class="form-control" id="inputAddress" name="password" value="<?php echo isset($_SESSION['valuePost']['password']) ? $_SESSION['valuePost']['password'] : ''  ?>">
             <label  class="error"><?php echo isset($arrError["password_required"]) ? $arrError["password_required"] : ''  ?></label>
-        </div>
-        <div class="form-group">
-            <label for="inputAddress">Localtion</label>
-            <select class="form-control" name="location_id">
-                <?php foreach(unserialize(localtion) as $key => $value){ ?>
-                    <option value="<?php echo $key ?>" <?php 
-                        if (isset($_SESSION['valuePost']['location_id']) && $_SESSION['valuePost']['location_id'] == $key){
-                            echo "selected";
-                        } else {
-                            echo "";
-                        }
-                    ?>><?php echo $value ?></option>
-                <?php } ?>
-            </select>
-            <label  class="error"><?php echo isset($arrError["location_id_required"]) ? $arrError["location_id_required"] : ''  ?></label>
-        </div>
-        <div class="form-group">
-            <label for="inputAddress">Role</label>
-            <select class="form-control" name="role">
-                <?php foreach(unserialize(role) as $key => $value){ ?>
-                    <option value="<?php echo $key ?>" <?php 
-                        if (isset($_SESSION['valuePost']['role']) && $_SESSION['valuePost']['role'] == $key){
-                            echo "selected";
-                        } else {
-                            echo "";
-                        }
-                    ?>><?php echo $value ?></option>
-                <?php } ?>
-            </select>
-            <label  class="error"><?php echo isset($arrError["role_required"]) ? $arrError["role_required"] : ''  ?></label>
         </div>
         <input type="submit" class="btn" name="submit" value="Submit">
     </form>

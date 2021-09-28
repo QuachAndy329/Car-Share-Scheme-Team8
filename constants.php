@@ -18,79 +18,9 @@
     define('url_myfitness','index.php?page=home');
 
     define('localtion',serialize(array(
-        '' => '',
         'A' => 'A',
         'B' => 'B',
         'C' => 'C',
     )));
-
-    define('role',serialize(array(
-        '2' => 'User',
-        '1' => 'Admin',
-    )));
-
-    define('member_type',serialize(array(
-        'Individual' => 'Individual',
-        'Family' => 'Family'
-    )));
-
-    define('member_duaration',serialize(array(
-        '1' => '1 months',
-        '3' => '3 months',
-        '6' => '6 months',
-        '12' => '12 months'
-    )));
-
-    define('myfitness_work',serialize(array(
-        array(
-            'id' => 1,
-            'name' => 'Walking (low intensity)',
-            'url_img' => 'walking.png'
-        ),
-        array(
-            'id' => 2,
-            'name' => 'Walking the dog',
-            'url_img' => 'walkingwithdog.png'
-        ),
-        array(
-            'id' => 3,
-            'name' => 'House keeping',
-            'url_img' => 'housek.jpg'
-        ),
-        array(
-            'id' => 4,
-            'name' => 'Shopping',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 5,
-            'name' => 'Gardening',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 6,
-            'name' => 'Ironing',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 7,
-            'name' => 'Filme with family',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 8,
-            'name' => 'Motorcycle riding',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 9,
-            'name' => 'Dancing',
-            'url_img' => 'service3.jpg'
-        ),
-        array(
-            'id' => 10,
-            'name' => 'Mowing the lawn',
-            'url_img' => 'service3.jpg'
-        )
-    )));
+    define('msg_error_number','Please enter number');
 ?>

@@ -1,8 +1,8 @@
 <?php
     // No login will be redirected to the home page
-    if(!isset($_SESSION['USER'])) {
-        header('Location: '.'index.php?page=login');
-    }
+    // if(!isset($_SESSION['USER'])) {
+    //     header('Location: '.'index.php?page=login');
+    // }
     $arrRedRecord = [];
     $fh = fopen(url_data_manage,'r');
     $arrRedRecord = json_decode(fgets($fh));
@@ -25,12 +25,13 @@
     }
 ?>
 <div class="container home">
-    <h1 class="title">Booking</h1>
+    <h1 class="title">Location</h1>
     <div class="row marginTopForm">
         <div class="col-md-3">
             <div class="form-group">
-                <label for="inputAddress">Location</label>
+                <label for="inputAddress">Localtion</label>
                 <select class="form-control location" name="location_id" style="border-radius:0px !important">
+                    <option value=""></option>
                     <?php foreach(unserialize(localtion) as $key => $value){ ?>
                         <option value="<?php echo $key ?>" <?php 
                             if (isset($_SESSION['location_id']) && $_SESSION['location_id'] == $key){
