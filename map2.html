@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Map</title>
+
+    <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 800px;
+        /* The height is 400 pixels */
+        width: 800px;
+        /* The width is the width of the web page */
+      }
+    </style>
+    <script>
+      // Initialize and add the map
+	  var gmarkers = [];
+      function initMap() {
+        // The location of user Current
+        //const userCurrPosMelCentral = { lat: -37.809917, lng: 144.963901 };
+		//var location = new google.maps.LatLng(51.99, -0.74);
+		var userCurrPosMelCentral = new google.maps.LatLng(-37.809917, 144.963901);
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 18,
+		  //center will be the current as well, now just hard coding
+          center: userCurrPosMelCentral,
+        });
+        // The marker, positioned at Current location
+		// Separate from other markers
+		const posImage = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+		const currentPosMarker = new google.maps.Marker({
+          position: userCurrPosMelCentral,
+		  icon: posImage,
+          map: map,
+        });
+	
+        setMarkers(map);
+		var nearestCar = closestMarker(gmarkers, currentPosMarker).title;
+
+		const userLocation = "<p>Your Location<br>Lat: "
+		                      +userCurrPosMelCentral.lat()+"<br>Lng: "
+							  +userCurrPosMelCentral.lng()+"<br>Nearest Car: "
+							  +nearestCar+"</p>";
+        const infowindow = new google.maps.InfoWindow();
+
+        google.maps.event.addListener(currentPosMarker,'click', (function(currentPosMarker,userLocation,infowindow){	
+            return function() {
+                infowindow.setContent(userLocation);
+                infowindow.open(map,currentPosMarker);
+	        }
+		})(currentPosMarker,userLocation,infowindow)); 		
+      }
+	  
+	  const cars = [
+        ["Red Car", -37.80960507120484, 144.96378036726685],
+        ["Yellow Car", -37.80928496088439, 144.96486931882998],
+        ["Green Car", -37.81058781118908, 144.9641835328741],
+        ["Black Car", -37.810091369973414, 144.96134788768904],
+        ["White Car", -37.80935300198135, 144.96244833492335],
+		["Good Car", -37.81186034009785, 144.96381793149365],
+        ["Bad Car", -37.809289728082426, 144.9636470046251],
+		["My Car", -37.810584356747945, 144.96701538077144],
+		["Your Car", -37.81293581902216, 144.96489461359323],
+	  ];
+	  
+      function setMarkers(map) {     
+        for (let i = 0; i < cars.length; i++) {	     
+		    const car = cars[i];
+		    const marker = new google.maps.Marker({
+		      position: { lat: car[1], lng: car[2] },
+		      map: map,
+		      title: car[0],
+            });
+			
+		//push all the markers into the gmakers array
+		//use for calculate distance later
+		gmarkers.push(marker);
+		
+		//could use div class to modify the style of content - with CSS I suppose	
+        const description = "<p>Car Name: "+car[0]+"<br>Lat: "+car[1]+"<br>Lng: "+car[2]+"</p>";
+        const infowindow = new google.maps.InfoWindow();
+
+		//config for infowindow
+        google.maps.event.addListener(marker,'click', (function(marker,description,infowindow){	
+            return function() {
+                infowindow.setContent(description);
+                infowindow.open(map,marker);
+	        }
+		})(marker,description,infowindow));  	
+	  }
+     }
+	 
+	  //find closest marker using spherical namespace in Geometry Library
+	  function closestMarker(markers, myMarker) {
+         return markers.reduce(function (prev, curr) {
+            var cpos = google.maps.geometry.spherical.computeDistanceBetween(myMarker.position, curr.position);
+            var ppos = google.maps.geometry.spherical.computeDistanceBetween(myMarker.position, prev.position);
+
+            return cpos < ppos ? curr : prev;
+         })
+     }
+    </script>
+  </head>
+  <body>
+    <h3>Map Sweet Map</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_LvD0va-7UvQXIa0F6lu7PXBeFaOLdZU&callback=initMap&libraries=geometry&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
