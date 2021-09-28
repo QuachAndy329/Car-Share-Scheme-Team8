@@ -1,127 +1,155 @@
-<!DOCTYPE HTML>  
 
-<html lang="en">
-<head>
-  <title>Testing WebSiteName</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body> 
+<?php
+    // User login will be redirected to the home page
+    if(isset($_SESSION['USER'])){
+        header('Location: '.'index.php');
+    }
+    //Get data from the form put into the session
+    $valuePost = $_POST;
+    $_SESSION['valuePost'] = $valuePost;
+    $arrError = [];
+    unset($_SESSION['alert_message_error']);
+    unset($_SESSION['alert_message_success']);
 
+    if(isset($valuePost['submit'])){
+        //validation data
+        if (isset($valuePost['full_name']) && $valuePost['full_name'] === '') {
+            $arrError["full_name_required"] = msg_required;
+        }
+    
+        if (isset($valuePost['email']) && $valuePost['email'] === '') {
+            $arrError["email_required"] = msg_required;
+        } else if (isset($valuePost['email']) && !filter_var($valuePost['email'], FILTER_VALIDATE_EMAIL)) {
+            $arrError["email_required"] = msg_email;
+        }
+    
+        if (isset($valuePost['password']) && $valuePost['password'] === '') {
+            $arrError["password_required"] = msg_required;
+        } else {
+            // $pattern = '/^(?=.{6,}$)[A-Z].*[!^&].*[0-9]+$/';
+            // if(!preg_match($pattern, $valuePost['password'])) {
+            //     $arrError["password_required"] =  msg_error_password;
+            // }
+            if(strlen($valuePost['password']) < 6) {
+                $arrError["password_required"] =  msg_error_password;
+            }
+        }
+        if (isset($valuePost['location_id']) && $valuePost['location_id'] === '') {
+            $arrError["location_id_required"] = msg_required;
+        }
+        //Open data file users.json
+        $arrRedRecord = [];
+        $fh = fopen(url_data_users,'r');
+        $arrRedRecord = json_decode(fgets($fh));
+        fclose($fh);
+    
+        //Check Duplicate user
+        $isCheckDuplicate = false;
+        if (!is_null($arrRedRecord) && isset($valuePost['email']) && $valuePost['email'] !== '') {
+            foreach($arrRedRecord  as $key => $value) {
+                if ($value->email == $valuePost['email']) {
+                    $isCheckDuplicate = true;
+                    break;
+                }
+            }
+        }
+    
+        if ($isCheckDuplicate) {
+            $arrError["email_required"] = msg_email_exits;
+        }
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">WebSiteName</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="index.php">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Page 1-1</a></li>
-          <li><a href="#">Page 1-2</a></li>
-          <li><a href="#">Page 1-3</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Page 2</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
+        $arrId = [];
+        if (!is_null($arrRedRecord)) {
+            foreach($arrRedRecord  as $key => $value) {
+                $arrId[] = $value->id;
+            }
+        }
+        //Add info user to users.json
+        if (count($arrError) == 0 && $isCheckDuplicate === false && isset($valuePost['submit'])) {
+            $fp = fopen(url_data_users, 'w');
+            unset($valuePost['submit']);
+            $valuePost['id'] = count($arrId) > 0 ? (max($arrId) + 1) : 1;
+            $arrRedRecord[] = $valuePost;
+            fwrite($fp, json_encode($arrRedRecord));
+            fclose($fp);
+            //$_SESSION['alert_message_success'] = msg_register_success;            
+            $isLogin = false;
+   
+            //Open data file users.json
+            $arrRedRecordNew = [];
+            $fh = fopen(url_data_users,'r');
+            $arrRedRecordNew = json_decode(fgets($fh));
+            fclose($fh);
 
+            foreach($arrRedRecordNew  as $key => $value) {
+                if ($value->email == $valuePost['email'] && $value->password == $valuePost['password']) {
+                    $isLogin = true;
+                    $value->login_success = 1;
+                    $_SESSION['USER'] = $value;
+                    break;
+                }
+            }
+            if(!$isLogin) {
+                $_SESSION['alert_message_error'] = msg_login_error;
+            } else {
+                unset($_SESSION['valuePost']);
+                header('Location: '.url_myfitness);
+                exit();
+            }
+        }
+    }
 
-	</div>
-  </nav>
-<div class="container">
-  
-<h2>Register</h2>
-
-
-<form method="POST" action="register.php" class="form">  
-<table cellspacing="0" cellpadding="5">
-                  <tr>
-                    <td>full name</td>
-                    <td>
-                       <input type="text" name="fname" >
-                       </td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>
-                     <input type="text" name="email">
-                     </td>
-                </tr>
-                <tr>
-                    <td>username</td>
-                    <td>
-                    <input type="text" name="uname" >
-                  </td>
-                </tr>
-                <tr>
-                    <td>password</td>
-                    <td>
-                 <input type="password" name="psw"  >
-                 </td>
-                </tr>
-                <tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" name="register" value="register"/>
-                    
-                    <p>Already have an account? <a href="login.php">Sign in</a>.</p></td>
-                </tr>
-                   
-    </table>
-  </form>
-  
-
-<?php 
-require_once("connection.php");
-if(isset($_POST['register'])){
-  $fname = trim($_POST['fname']);
-  $email = trim($_POST['email']);
-  $uname = trim($_POST['uname']);
-  $psw = trim($_POST['psw']);
-
-  $data = $_POST;
-  if (empty($data['fname']) ||
-  empty($data['email']) ||
-  empty($data['uname']) ||
-  empty($data['psw'])) {
-  
-  die('Please fill all required fields!');
-}
-
-
-$sql = "SELECT * FROM account WHERE uname = '$uname' OR email = '$email'";
-
-$result = mysqli_query($conn, $sql);
-
-if (mysqli_num_rows($result) > 0)
-{
-echo '<script language="javascript">alert("user or email already in the system"); window.location="register.php";</script>';
-
-die ();
-}
-else {
-
-
-$sql = "INSERT INTO `a3VTuuc6Jb`.`account` (`fname`,`email`,`uname`,`psw`) VALUES ('$fname','$email','$uname','$psw')";
-echo '<script language="javascript">alert("successfull register"); window.location="login.php";</script>';
-
-if (mysqli_query($conn, $sql)){
-echo "full name: ".$_POST['fname']."<br/>";
-echo "email: " .$_POST['email']."<br/>";
-echo "username ".$_POST['uname']."<br/>";
-echo "password ".$_POST['psw']."<br/>";
-}
-else {
-echo '<script language="javascript">alert("error!!!!"); window.location="register.php";</script>';
-}
-}
-}
 ?>
+
+<div class="container register">
+    <h1 class="title">REGISTRATION FORM</h1>
+    <form class="login marginTopForm registerForm"  method="post" action="index.php?page=register" onchange="mountTotals()">
+        <?php require 'alert-message.php'; ?>
+        <div class="form-group">
+            <label for="inputEmail4">Full Name</label>
+            <input type="text" class="form-control" id="inputEmail4" name="full_name" value="<?php echo isset($_SESSION['valuePost']['full_name']) ? $_SESSION['valuePost']['full_name'] : ''  ?>">
+            <label  class="error"><?php echo isset($arrError["full_name_required"]) ? $arrError["full_name_required"] : ''  ?></label>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Email</label>
+            <input type="text" class="form-control" id="inputAddress" name="email" value="<?php echo isset($_SESSION['valuePost']['email']) ? $_SESSION['valuePost']['email'] : ''  ?>">
+            <label  class="error"><?php echo isset($arrError["email_required"]) ? $arrError["email_required"] : ''  ?></label>
+        </div>
+         <div class="form-group">
+            <label for="inputAddress">Password</label>
+            <input type="password" class="form-control" id="inputAddress" name="password" value="<?php echo isset($_SESSION['valuePost']['password']) ? $_SESSION['valuePost']['password'] : ''  ?>">
+            <label  class="error"><?php echo isset($arrError["password_required"]) ? $arrError["password_required"] : ''  ?></label>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Localtion</label>
+            <select class="form-control" name="location_id">
+                <?php foreach(unserialize(localtion) as $key => $value){ ?>
+                    <option value="<?php echo $key ?>" <?php 
+                        if (isset($_SESSION['valuePost']['location_id']) && $_SESSION['valuePost']['location_id'] == $key){
+                            echo "selected";
+                        } else {
+                            echo "";
+                        }
+                    ?>><?php echo $value ?></option>
+                <?php } ?>
+            </select>
+            <label  class="error"><?php echo isset($arrError["location_id_required"]) ? $arrError["location_id_required"] : ''  ?></label>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Role</label>
+            <select class="form-control" name="role">
+                <?php foreach(unserialize(role) as $key => $value){ ?>
+                    <option value="<?php echo $key ?>" <?php 
+                        if (isset($_SESSION['valuePost']['role']) && $_SESSION['valuePost']['role'] == $key){
+                            echo "selected";
+                        } else {
+                            echo "";
+                        }
+                    ?>><?php echo $value ?></option>
+                <?php } ?>
+            </select>
+            <label  class="error"><?php echo isset($arrError["role_required"]) ? $arrError["role_required"] : ''  ?></label>
+        </div>
+        <input type="submit" class="btn" name="submit" value="Submit">
+    </form>
 </div>
-</body>
-</html>

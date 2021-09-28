@@ -1,0 +1,147 @@
+.wrap 
+    .content  
+        .title {
+            text-align: center;
+            margin-top:20px;
+            font-size : 1.5rem;
+        }
+        .box-1 {
+            padding:20px 40px 0;
+            font-size: 20px;
+            color: rgb(19, 103, 158);
+        }
+        .box-2 {
+            padding:20px 40px 0;
+        }
+.wrap 
+    .content {
+        margin-bottom: 60px;
+    }
+.wrap 
+    .footer {
+        text-align: left;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        height: 40px;
+        background: #111;
+
+    }
+    .footer-left {
+        width: 420px;
+        padding:10px 40px 0;
+    }
+    .footer-left 
+        .ul-footer {
+            color: #fff;
+            list-style-type: none;
+            text-align: right;
+        }
+    .footer-left
+        a{
+            text-decoration: none;
+            color:#fff;
+        }
+    .footer-left 
+        .li-footer {
+            display:inline;
+            padding-left:10px;
+        }
+    .copy-right {
+        color: #fff;
+        float: left;
+    }
+    .contact-us,.login,.myfitness {
+        margin-top:50px;
+        width: 70%;
+        margin: 0 auto;
+    }
+    label.error {
+        color:red;
+    }
+    .marginTopForm {
+        margin-top: 2em;
+    }
+    .btn-primary-custom {
+        width: 100%;
+    }
+    #member_child {
+        padding: 0em 4em;
+        width: 100%;
+    }
+    .sub_member {
+        position: relative;
+    }
+    .remove {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        border-radius: 13px;
+        border: 20px;
+    }
+    .bg-header-custom{
+        background: #87CEFA !important;
+        border-bottom:3px solid #111;
+        height: 70px;
+    }
+    .bg-header-custom
+        nav .p-2 {
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        nav .p-2:hover {
+            color:#fff !important;
+        }
+    .header
+        .logo a {
+            font-weight: bold;
+            font-size: 30px;
+            font-family: cursive;
+            color: #fff;
+            text-decoration: none;
+        }
+        .logo {
+            color: #A7DD3C;
+            text-transform: uppercase;
+            text-shadow: 2px 0 0px #800040, 3px 2px 0px rgba(77,0,38,0.5), 3px 0 3px #FF002B, 5px 0 3px #800015, 6px 2px 3px rgba(77,0,13,0.5), 6px 0 9px #FF5500, 8px 0 9px #802A00, 9px 2px 9px rgba(77,25,0,0.5), 9px 0 18px #FFD500, 11px 0 18px #806A00, 12px 2px 18px rgba(77,66,0,0.5), 12px 0 30px #D4FF00, 14px 0 30px #6A8000, 15px 2px 30px rgba(64,77,0,0.5), 15px 0 45px #80FF00, 17px 0 45px #408000, 17px 2px 45px rgba(38,77,0,0.5);
+        }
+    .content 
+        .register {
+            border-style: groove;
+            margin-top:30px;
+            width:850px;
+        }
+        .registerForm{
+            width:70%;
+            margin: 0 auto;
+            margin-bottom:50px;
+        }
+        .registerForm
+            input,select {
+                border-radius: 20px !important;
+            }
+            .group-money-total{
+                font-size: 19px;
+                text-transform: uppercase;
+                text-align: center;
+                margin-bottom: 32px;
+                color: #333;
+                font-weight: bold;
+            }
+    input[type="submit"]{
+        box-shadow: 6px 4px 6px 0px #cf866c;
+        background-color: #d0451b;
+        border-radius: 28px;
+        border: 1px solid #942911;
+        display: flex;
+        margin: auto;
+        cursor: pointer;
+        color: #ffffff;
+        font-size: 17px;
+        padding: 4px 25px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #854629;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
