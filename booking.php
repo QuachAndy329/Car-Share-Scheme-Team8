@@ -1,8 +1,8 @@
 <?php
     // No login will be redirected to the home page
-    // if(!isset($_SESSION['USER'])) {
-    //     header('Location: '.'index.php?page=login');
-    // }
+    if(!isset($_SESSION['USER'])) {
+        header('Location: '.'index.php?page=login');
+    }
     unset($_SESSION['location_id']);
     unset($_SESSION['number']);
     $arrRedRecord = [];
@@ -137,7 +137,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="inputAddress">Number</label>
+                            <label for="inputAddress">Number days</label>
                             <input type="text" name="number" class="form-control" value="<?php echo isset($_SESSION['number']) ? $_SESSION['number'] : ''  ?>">
                             <label  class="error"><?php echo isset($arrError["number_required"]) ? $arrError["number_required"] : ''  ?></label>
                         </div>
@@ -152,14 +152,14 @@
     <?php } else { ?>
         <div class="row marginTopForm">
             <div class="col-md-12">
-                <label for="inputAddress">History</label>
+                <!-- <label for="inputAddress">History</label> -->
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Location Revert</th>
-                            <th scope="col">Card ID</th>
+                            <th scope="col">Car ID</th>
                             <th scope="col">Photo</th>
-                            <th scope="col">Number</th>
+                            <th scope="col">Number days</th>
                         </tr>
                     </thead>
                     <tbody>

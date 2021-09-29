@@ -29,7 +29,7 @@
     <div class="row marginTopForm">
         <div class="col-md-3">
             <div class="form-group">
-                <label for="inputAddress">Localtion</label>
+                <label for="inputAddress">Location</label>
                 <select class="form-control location" name="location_id" style="border-radius:0px !important">
                     <option value=""></option>
                     <?php foreach(unserialize(localtion) as $key => $value){ ?>

@@ -12,7 +12,7 @@
                     require 'login.php';
                     break;
                 case "home" : 
-                    require 'home.php';
+                    require 'page.php';
                     break;
                 case "manage" : 
                     require 'manage.php';

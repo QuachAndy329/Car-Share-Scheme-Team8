@@ -18,9 +18,9 @@
     define('url_myfitness','index.php?page=home');
 
     define('localtion',serialize(array(
-        'A' => 'A',
-        'B' => 'B',
-        'C' => 'C',
+        'A' => 'Branch A (RMIT)',
+        'B' => 'Branch B (Footscray)',
+        'C' => 'Branch C (Springvale)',
     )));
     define('msg_error_number','Please enter number');
 ?>
