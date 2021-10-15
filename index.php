@@ -26,6 +26,9 @@
                 case "booking" : 
                     require 'booking.php';
                     break;
+                case "privacypolicy" : 
+                    require 'privacypolicy.php';
+                    break;
                 default : 
                 require 'page.php';
             }

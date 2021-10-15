@@ -101,7 +101,8 @@
 
 <div class="container register">
     <h1 class="title">REGISTRATION FORM</h1>
-    <form class="login marginTopForm registerForm"  method="post" action="index.php?page=register" onchange="mountTotals()">
+    <form class="login marginTopForm registerForm"  method="post" action="index.php?page=register" onchange="mountTotals()" onsubmit="if(document.getElementById('ppolicy').checked) { return true; } else { alert('Please indicate that you have read and agree to the Privacy Policy'); return false; }">  
+
         <?php require 'alert-message.php'; ?>
         <div class="form-group">
             <label for="inputEmail4">Full Name</label>
@@ -117,6 +118,10 @@
             <label for="inputAddress">Password</label>
             <input type="password" class="form-control" id="inputAddress" name="password" value="<?php echo isset($_SESSION['valuePost']['password']) ? $_SESSION['valuePost']['password'] : ''  ?>">
             <label  class="error"><?php echo isset($arrError["password_required"]) ? $arrError["password_required"] : ''  ?></label>
+        </div>
+        <div class="form-group">
+        <input type="checkbox" id="ppolicy" name="ppolicy" value="ppolicy">
+        <label for="ppolicy"> <b> I have read and agree to the <a href="index.php?page=privacypolicy">Privacy Policy</a></b> </label><br>
         </div>
         <input type="submit" class="btn" name="submit" value="Submit">
     </form>
