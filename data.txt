@@ -1,0 +1,4 @@
+Type of database: Relational Database
+Database architecture: json database
+Database version: 3.0.0
+

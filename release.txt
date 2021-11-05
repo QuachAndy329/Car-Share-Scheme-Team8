@@ -1,0 +1,2 @@
+Bugs and Issues
+Major issues in testing were not every PBI was implemented therefore testing could not be completed which include PBI 10 and PBI 12. Some bugs in testing were Location functionality because it interfered with the Google Maps functionality therefore location had to be hard coded into the website and testing was partially done on PBI 6 and PBI 7
