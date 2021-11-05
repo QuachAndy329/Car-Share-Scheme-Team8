@@ -1,6 +1,7 @@
 Release Notes- not all feature of the product have been complete. User story 10 and 12 have not been completed. Please check user stories excel file for more information. 
 
 Github url- https://github.com/QuachAndy329/PP1-03-TUE1430-TEAM08
+Gitflow diagram- was added as a image because it was not Compatible with a .txt file
 
 Credential information admin- 
 Email:admin@gmail.com
