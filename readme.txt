@@ -7,8 +7,7 @@ Credential information admin-
 Email:admin@gmail.com
 Password:123456
 
-Public URL: 
-https://titan.csit.rmit.edu.au/~s3660068/wp/pp1/index.php
+Public URL: https://titan.csit.rmit.edu.au/~s3660068/wp/pp1/index.php
 
 Implementation Instructions
 
